@@ -448,6 +448,7 @@ void I2cController::performRegisterRead(uint8_t addr, uint16_t start, uint16_t l
         }
         if (i2cService.endTransmission(false) != 0) {
             // NACK on pointer write
+            if (offset == 0) break;
             continue;
         }
 
@@ -483,6 +484,10 @@ void I2cController::performRegisterRead(uint8_t addr, uint16_t start, uint16_t l
         // Flush remaining just in case
         while (i2cService.available()) (void)i2cService.read();
 
+        // If the first register probe yielded nothing, avoid probing every
+        // remaining offset on a device that does not expose registers.
+        if (offset == 0 && !valid[0]) break;
+
         utilityService.sleepMs(1);
     }
 }
@@ -496,18 +501,28 @@ void I2cController::performRawRead(uint8_t addr, uint16_t start,
 
     terminalView.println("I2C Dump: Trying read raw...");
 
-    // Set starting point 
-    i2cService.beginTransmission(addr);
-    i2cService.write((uint8_t)(start & 0xFF));
-    if (i2cService.endTransmission(false) != 0) {
-        return; // NACK
-    }
-
     const uint8_t CHUNK = 16;
     uint16_t pos = 0;
 
+    (void)start;
+
+    char key = terminalInput.readChar();
+    if (key == '\r' || key == '\n') {
+        terminalView.println("I2C Dump: Cancelled by user.");
+        return;
+    }
+
+    // Probe without writing a register pointer so this fallback remains
+    // compatible with devices that expose a non-register protocol.
+    uint8_t got = i2cService.requestFrom(addr, (uint8_t)1, true);
+    if (got == 0 || !i2cService.available()) return;
+
+    values[pos] = (uint8_t)i2cService.read();
+    valid[pos] = true;
+    ++pos;
+
     while (pos < len) {
-        char key = terminalInput.readChar();
+        key = terminalInput.readChar();
         if (key == '\r' || key == '\n') {
             terminalView.println("I2C Dump: Cancelled by user.");
             return;
@@ -515,16 +530,8 @@ void I2cController::performRawRead(uint8_t addr, uint16_t start,
 
         uint8_t want = (uint8_t)((len - pos) > CHUNK ? CHUNK : (len - pos));
 
-        uint8_t got = i2cService.requestFrom(addr, want, true);
-
-        if (got == 0) {
-            // Fallback: try read 1 byte 
-            got = i2cService.requestFrom(addr, (uint8_t)1, true);
-            if (got == 0) {
-                // Nothing more available
-                break;
-            }
-        }
+        got = i2cService.requestFrom(addr, want, true);
+        if (got == 0) break;
 
         for (uint8_t i = 0; i < got && pos < len; ++i, ++pos) {
             if (i2cService.available()) {
