@@ -1,4 +1,3 @@
-```yaml
 name: Upstream Firmware Delivery
 
 on:
@@ -236,4 +235,3 @@ jobs:
             origin \
             HEAD:refs/heads/upstream-builds \
             --force
-```
