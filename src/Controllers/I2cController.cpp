@@ -448,7 +448,6 @@ void I2cController::performRegisterRead(uint8_t addr, uint16_t start, uint16_t l
         }
         if (i2cService.endTransmission(false) != 0) {
             // NACK on pointer write
-            if (offset == 0) break;
             continue;
         }
 
@@ -483,10 +482,6 @@ void I2cController::performRegisterRead(uint8_t addr, uint16_t start, uint16_t l
 
         // Flush remaining just in case
         while (i2cService.available()) (void)i2cService.read();
-
-        // If the first register probe yielded nothing, avoid probing every
-        // remaining offset on a device that does not expose registers.
-        if (offset == 0 && !valid[0]) break;
 
         utilityService.sleepMs(1);
     }
