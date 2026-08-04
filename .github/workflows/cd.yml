@@ -1,3 +1,4 @@
+```yaml
 name: Upstream Firmware Delivery
 
 on:
@@ -75,6 +76,19 @@ jobs:
 
           rm -rf "${OUTPUT_DIR}"
           mkdir -p "${DOWNLOAD_DIR}"
+
+          # Enable the full FastLED protocol set for upstream distributed builds.
+          sed -i -E \
+            's/^([[:space:]]*);[[:space:]]*(-D ENABLE_FASTLED_PROTOCOL_SWITCHES.*)$/\1\2/' \
+            platformio.ini
+
+          # Fail explicitly if the build flag could not be enabled.
+          if ! grep -q '^[[:space:]]*-D ENABLE_FASTLED_PROTOCOL_SWITCHES' platformio.ini; then
+            echo "Failed to enable ENABLE_FASTLED_PROTOCOL_SWITCHES."
+            exit 1
+          fi
+
+          echo "FastLED protocol switches enabled for upstream builds."
 
           # Find every [env:...] section except native-tests.
           mapfile -t ENVIRONMENTS < <(
@@ -222,3 +236,4 @@ jobs:
             origin \
             HEAD:refs/heads/upstream-builds \
             --force
+```
