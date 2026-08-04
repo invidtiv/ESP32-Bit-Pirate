@@ -135,7 +135,6 @@ jobs:
             FIRMWARE_NAME="esp32-bit-pirate-${ENVIRONMENT}-upstream.bin"
             DESTINATION="${DOWNLOAD_DIR}/${FIRMWARE_NAME}"
 
-            # Make sure all required firmware components were generated.
             for FILE in \
               "${BOOTLOADER_IMAGE}" \
               "${PARTITIONS_IMAGE}" \
@@ -147,11 +146,9 @@ jobs:
               fi
             done
 
-            # Build a complete flashable image:
-            #   0x0000  bootloader
-            #   0x8000  partition table
-            #   0x10000 application firmware
-            python -m esptool \
+            # Generate complete merged flash image using the esptool
+            # installed by the PlatformIO platform.
+            pio pkg exec -- esptool.py \
               --chip esp32s3 \
               merge_bin \
               -o "${DESTINATION}" \
