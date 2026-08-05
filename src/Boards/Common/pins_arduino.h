@@ -6,3 +6,6 @@
 
 #undef USB_PID
 #define USB_PID 0x1002
+
+#undef USB_PRODUCT
+#define USB_PRODUCT "ESP32 Bit Pirate"
