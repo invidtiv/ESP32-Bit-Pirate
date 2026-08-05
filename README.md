@@ -38,6 +38,7 @@ From there you can [install the firmware](https://geo-tp.github.io/ESP32-Bit-Pir
    - [RF24](https://github.com/geo-tp/ESP32-Bit-Pirate/wiki/21-RF24) (scan, send, receive)
    - [FM](https://github.com/geo-tp/ESP32-Bit-Pirate/wiki/22-FM) (analyze, broadcast)
    - [CELL](https://github.com/geo-tp/ESP32-Bit-Pirate/wiki/23-CELL) (dump sim card, sms, call)
+   - [LORA](https://github.com/geo-tp/ESP32-Bit-Pirate/wiki/24-LORA) (sniff, payload, meshtatic)
 
 
 - **Protocol sniffers** I2C, UART, SPI, 1Wire, 2wire, CAN, Wi-Fi, Bluetooth, SubGhz.
@@ -140,7 +141,7 @@ The Expander adds support for the **WiFi 5 GhZ** or other radio protocols.
 🔧 **[A docking station for the ESP32 S3 DevKit](https://github.com/AndreiVladescu/ESP32-Bit-Pirate-Dock) designed to work with original Bus Pirate adapters.**
 It allows you to plug and use the original [Bus Pirate](https://buspirate.com/) ecosystem of adapters and accessories.
 
-[![The ESP32 Bit Pirate dock board](images/bus_pirate_dock_board.png)](https://www.pcbway.com/project/shareproject/ESP32_Bit_Pirate_Dock_ca02ded7.html)
+[![The ESP32 Bit Pirate dock board](images/bit_pirate_dock_board.jpeg)](https://www.pcbway.com/project/shareproject/ESP32_Bit_Pirate_Dock_ca02ded7.html)
 
 [**Get the ESP32 Bit Pirate Dock on PCBWay.**](https://www.pcbway.com/project/shareproject/ESP32_Bit_Pirate_Dock_ca02ded7.html)
 
