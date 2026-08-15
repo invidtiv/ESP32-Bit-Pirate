@@ -225,5 +225,4 @@ public:
     uint8_t eepromDetectAddressBytes() override { return 0; }
     uint16_t eepromDetectPageSize() override { return 0; }
     uint8_t eepromDetectWriteTime(uint8_t = 8) override { return 0; }
-    bool tryPowerOnSticks3Pmic(uint32_t) override { return false; }
 };
