@@ -7,7 +7,7 @@ void StickS3Board::initialize() {
     auto cfg = M5.config();
     M5.begin(cfg);
     deviceView.setRotation(3);
-    M5.Power.setExtOutput(false);
+    M5.Power.setExtOutput(true);  // enable EXT_5V 
     deviceView.logo();
     deviceInput.waitPress(3000);
 }

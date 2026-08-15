@@ -1,10 +1,6 @@
 #include "InfraredController.h"
 #include "Data/UniversalRemoteCommands.h"
 
-#ifdef DEVICE_STICKS3
-    #include <M5Unified.h>
-#endif
-
 /*
 Constructor
 */
@@ -627,29 +623,6 @@ void InfraredController::handleConfig() {
     auto selectedProtocol = InfraredProtocolMapper::toString(state.getInfraredProtocol());
     terminalView.println("Current protocol: '" + selectedProtocol + "'");
     terminalView.println("You can change it with 'setprotocol'");
-
-    // Infrared need EXT power on Sticks3
-    #ifdef DEVICE_STICKS3
-    {
-        auto confirm = userInputManager.readYesNo(
-            "Enable power for built-in IR on StickS3?", true
-        );
-
-        bool success = false;
-        if (confirm) {
-            success = i2cService.tryPowerOnSticks3Pmic(1000);
-        }
-
-        if (confirm && success) {
-            terminalView.println("✅ Powered on built-in IR module on StickS3.");
-        } else if (confirm) {
-            terminalView.println("⚠️ Failed to power on IR module. It may not work properly.");
-        }
-
-        pinMode(state.getInfraredRxPin(), INPUT_PULLUP);
-    }
-    #endif
-
     terminalView.println("Infrared configured.\n");
 }
 
