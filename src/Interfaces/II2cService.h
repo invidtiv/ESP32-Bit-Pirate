@@ -84,5 +84,4 @@ public:
     virtual uint16_t eepromDetectPageSize() = 0;
     virtual uint8_t eepromDetectWriteTime(uint8_t testCount = 8) = 0;
 
-    virtual bool tryPowerOnSticks3Pmic(uint32_t timeout) = 0;
 };

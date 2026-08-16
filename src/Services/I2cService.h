@@ -76,9 +76,6 @@ public:
     uint16_t eepromDetectPageSize() override;
     uint8_t eepromDetectWriteTime(uint8_t testCount = 8) override;
 
-    // sticks3 power control
-    bool tryPowerOnSticks3Pmic(uint32_t timeout) override;
-
 private:
     ExternalEEPROM eeprom;
     bool probeReadableReg(uint8_t addr, uint8_t reg);
